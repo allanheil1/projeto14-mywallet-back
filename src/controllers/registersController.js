@@ -1,4 +1,3 @@
-import { MongoAPIError } from 'mongodb';
 import db from '../db/db.js';
 
 async function insertRegister(req, res){
@@ -33,7 +32,6 @@ async function listRegisters(req, res){
     const { user } = res.locals;
 
     try{
-
         //Find all registers from that user
         const userRegisters = await db.collection('registers').find({
             userId: user._id

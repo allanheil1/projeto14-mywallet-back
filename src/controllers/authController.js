@@ -52,10 +52,15 @@ async function signIn (req, res) {
             email: email
         });
 
+        if(!user){
+            //STATUS_CODE: UNAUTHORIZED
+            return res.sendStatus(401);  
+        }
+
         //Check if password is correct
         const isPasswordCorrect = bcrypt.compareSync(password, user.password);
 
-        if(!user || !isPasswordCorrect){
+        if(!isPasswordCorrect){
             //STATUS_CODE: UNAUTHORIZED
             return res.sendStatus(401);
         }

@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb';
 dotenv.config();
 let db;
 
-const mongoClient = new MongoClient('mongodb://localhost:27017');
+const mongoClient = new MongoClient(process.env.MONGO_URI);
 
 try {
 

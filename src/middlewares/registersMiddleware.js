@@ -14,10 +14,7 @@ function registersMiddleware(req, res, next) {
     return res.send(400);
   }
 
-  if (
-    mode !== 'entrada'&&
-    mode !== 'saida'
-  ) {
+  if (mode !== 'entrada'&& mode !== 'saida') {
     //STATUS_CODE: BAD_REQUEST
     return res.send(400);
   }
