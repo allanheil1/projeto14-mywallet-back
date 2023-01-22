@@ -7,4 +7,4 @@ const STATUS_CODE = {
     BADREQUEST: 400
 }
 
-export { STATUS_CODE };
+export default { STATUS_CODE };

@@ -2,10 +2,10 @@ import bcrypt from 'bcrypt';
 import joi from 'joi';
 import { v4 as uuid } from 'uuid';
 import STATUS_CODE from '../enums/status.js';
-import mongo from '../db/db.js';
+import db from '../db/db.js';
 import { signInSchema, signUpSchema } from '../schemas/authenticationSchemas.js';
 
-async function signUp (req, res) {
+async function signUp (req, res) {W
 
     const { name, email, password } = req.body;
 
@@ -20,7 +20,7 @@ async function signUp (req, res) {
 
     try{
 
-        mongo.collection('users').insertOne({ 
+        db.collection('users').insertOne({ 
             name: name,
             email: email,
             password: cryptedPassword
@@ -51,7 +51,7 @@ async function signIn (req, res) {
 
     try{
         //find if user exists
-        const user = await mongo.collection('users').findOne({
+        const user = await db.collection('users').findOne({
             email: email
         });
 
@@ -67,7 +67,7 @@ async function signIn (req, res) {
         const sessionToken = uuid();
 
         //create session for user in the db
-        mongo.collection('sessions').insertOne({ 
+        db.collection('sessions').insertOne({ 
             userId: user._id,
             sessionToken: sessionToken
          });
