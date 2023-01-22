@@ -1,0 +1,10 @@
+const STATUS_CODE = {
+    OK: 200,
+    CREATED: 201,
+    NOTFOUND: 404,
+    UNAUTHORIZED: 401,
+    SERVERERROR: 500,
+    BADREQUEST: 400
+}
+
+export { STATUS_CODE };
