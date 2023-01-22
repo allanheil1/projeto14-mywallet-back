@@ -1,26 +1,27 @@
-import STATUS_CODE from "../enums/status.js";
 import db from '../db/db.js';
 
 async function insertRegister(req, res){
 
     const token = req.headers.authorization?.replace('Bearer ', '');
 
+    console.log(token)
+
     const { description, value, mode } = req.body;
 
 
     if(!token){
-        return res.sendStatus(STATUS_CODE.BADREQUEST);
+        return res.sendStatus(400);
     }
 
 
     try{
 
         const session = await db.collection('sessions').findOne({
-            token: token
+            sessionToken: token
         });
 
         if(!session){
-            return res.sendStatus(STATUS_CODE.UNAUTHORIZED);
+            return res.sendStatus(401);
         }
 
         db.collection('registers').insertOne({
@@ -30,12 +31,12 @@ async function insertRegister(req, res){
             userId: session.userId
         })
 
-        return res.sendStatus(STATUS_CODE.CREATED);
+        return res.sendStatus(201);
 
     } catch(err) {
         
         console.log(err);
-        return res.sendStatus(STATUS_CODE.SERVERERROR);
+        return res.sendStatus(500);
 
     }
 

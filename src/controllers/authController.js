@@ -1,11 +1,10 @@
 import bcrypt from 'bcrypt';
 import joi from 'joi';
 import { v4 as uuid } from 'uuid';
-import STATUS_CODE from '../enums/status.js';
 import db from '../db/db.js';
 import { signInSchema, signUpSchema } from '../schemas/authenticationSchemas.js';
 
-async function signUp (req, res) {W
+async function signUp (req, res) {
 
     const { name, email, password } = req.body;
 
@@ -13,7 +12,7 @@ async function signUp (req, res) {W
 
     if(validateSchema.error){
         //bad request
-        return res.sendStatus(STATUS_CODE.BADREQUEST);
+        return res.sendStatus(400);
     }
 
     const cryptedPassword = bcrypt.hashSync(password, 10);
@@ -26,11 +25,11 @@ async function signUp (req, res) {W
             password: cryptedPassword
          });
 
-        return res.sendStatus(STATUS_CODE.CREATED);
+        return res.sendStatus(201);
         
     } catch (err) {
         console.log(err);
-        return res.sendStatus(STATUS_CODE.SERVERERROR);
+        return res.sendStatus(500);
     }
 
 }
@@ -43,7 +42,7 @@ async function signIn (req, res) {
 
     if(validateSchema.error){
         //bad request
-        return res.sendStatus(STATUS_CODE.BADREQUEST);
+        return res.sendStatus(400);
     }
 
     //encrypt password
@@ -60,7 +59,7 @@ async function signIn (req, res) {
 
         //if user does not exist or password is incorrect
         if(!user || !isPasswordCorrect){
-            return res.sendStatus(STATUS_CODE.UNAUTHORIZED);
+            return res.sendStatus(401);
         }
 
         //create session token
@@ -77,7 +76,7 @@ async function signIn (req, res) {
         
     } catch (err) {
         console.log(err);
-        return res.sendStatus(STATUS_CODE.SERVERERROR);
+        return res.sendStatus(500);
     }
 
 }
