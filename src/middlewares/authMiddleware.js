@@ -4,6 +4,7 @@ async function authMiddleware(req, res, next){
 
     const token = req.headers.authorization?.replace('Bearer ', '');
 
+    //If we do not find any session with this token, return bad request
     if(!token){
         //STATUS_CODE: BAD_REQUEST
         return res.sendStatus(400);
@@ -20,9 +21,17 @@ async function authMiddleware(req, res, next){
             return res.sendStatus(401);
         }
 
-        //the controller needs to know the session
-        res.locals.session = session;
+        //Find the user
+        const user = await db.collection('users').findOne({
+            _id: session.userId
+        })
 
+        console.log(session);
+        console.log(user);
+
+        //the controller needs to know the session and the user
+        res.locals.user = user;
+        res.locals.session = session;
         next();
 
     } catch(err) {

@@ -10,13 +10,15 @@ function registersMiddleware(req, res, next) {
   });
 
   if (isRegisterValid.error) {
+    //STATUS_CODE: BAD_REQUEST
     return res.send(400);
   }
 
   if (
-    mode.toLowerCase() !== 'entrada'&&
-    mode.toLowerCase() !== 'saida'
+    mode !== 'entrada'&&
+    mode !== 'saida'
   ) {
+    //STATUS_CODE: BAD_REQUEST
     return res.send(400);
   }
 
