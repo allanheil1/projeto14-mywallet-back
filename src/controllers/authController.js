@@ -74,8 +74,13 @@ async function signIn (req, res) {
             sessionToken: sessionToken
          });
 
+         const returnData = {
+            token: sessionToken,
+            user: user
+         }
+
         //Return the session token
-        return res.send(sessionToken);
+        return res.send(returnData);
         
     } catch (err) {
         console.log(err);
