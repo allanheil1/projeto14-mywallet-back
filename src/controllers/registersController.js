@@ -11,7 +11,7 @@ async function insertRegister(req, res){
         //insert in the DB
         db.collection('registers').insertOne({
             description, 
-            value, 
+            value: Number(value), 
             mode,
             userId: session.userId,
             date: +new Date()
@@ -36,25 +36,6 @@ async function listRegisters(req, res){
         const userRegisters = await db.collection('registers').find({
             userId: user._id
         }).toArray();
-
-        const balance = userRegisters.reduce((accumulator, currentValue) => {
-            //If it's an income, sum
-            if(currentValue.mode === 'saida'){
-                return accumulator - currentValue.value;
-            }
-            if(currentValue.mode === 'entrada'){
-                return accumulator + currentValue.value;
-            }
-        }, 0);
-
-        //The last document from the 'registers' collection, will be te total balance
-        userRegisters.push({
-            mode: 'balance',
-            value: balance
-        })
-
-        console.log(balance)
-
         return res.send(userRegisters);
 
     } catch(err) {
